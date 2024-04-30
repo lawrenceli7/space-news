@@ -1,22 +1,11 @@
 import { Article } from "@/types/types";
-import { Pagination, Table, Tag } from "antd";
-import React from "react";
-
+import { Table } from "antd";
 interface ArticleTableProps {
   articles: Article[];
   loading: boolean;
-  pageSize: number;
-  totalArticles: number;
-  currentPage: number;
-  onPageChange: (page: number) => void;
 }
 
-const ArticleTable: React.FC<ArticleTableProps> = ({ articles,
-  loading,
-  pageSize,
-  totalArticles,
-  currentPage,
-  onPageChange, }) => {
+const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading, }) => {
 
   const columns = [
     {
@@ -43,7 +32,6 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles,
           minute: "numeric",
           hour12: true,
         };
-
         return new Date(text).toLocaleString("en-US", options);
       },
     },
@@ -55,16 +43,6 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles,
         dataSource={articles}
         columns={columns}
         loading={loading}
-        pagination={{
-          current: currentPage,
-          defaultCurrent: 1,
-          pageSize: pageSize,
-          total: totalArticles,
-          onChange: onPageChange,
-          showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          style: { display: 'flex', justifyContent: 'center', marginTop: '10px' }
-        }}
       />
     </>
 

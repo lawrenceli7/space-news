@@ -1,74 +1,78 @@
 /* eslint-disable @next/next/no-img-element */
-import ArticleCard from "@/components/ArticleCard";
 import ArticleList from "@/components/ArticleList";
 import ArticleSearch from "@/components/ArticleSearch";
 import ArticleStatistics from "@/components/ArticleStatistics";
 import ArticleTable from "@/components/ArticleTable";
+import { Article } from "@/types/types";
 import { Divider, Pagination, Switch, Typography } from "antd";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const NewsPage: React.FC = () => {
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageSize, setPageSize] = useState(10);
   const [tableView, setTableView] = useState("table");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalArticles, setTotalArticles] = useState(0);
+  const [count, setCount] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
 
-
-  const fetchData = React.useCallback(async () => {
-    try {
-      setLoading(true);
-      const offset = (currentPage - 1) * pageSize;
-      const response = await axios.get(
-        `https://api.spaceflightnewsapi.net/v4/articles?_start=${offset}&_limit=${pageSize}&_sort=publishedDate:DESC`
-      );
-
-      console.log("API Response:", response.data);
-
-      if (Array.isArray(response.data)) {
-        setArticles(response.data);
-        setTotalPages(Math.ceil(response.headers['x-total-count'] / pageSize));
-        setTotalArticles(response.headers['x-total-count']);
-      } else if (Array.isArray(response.data.results)) {
-        setArticles(response.data.results);
-        setTotalPages(Math.ceil(response.headers['x-total-count'] / pageSize));
-        setTotalArticles(response.headers['x-total-count']);
-      } else {
-        console.error("API response does not contain an array:", response.data);
+  useEffect(() => {
+    async function getArticles() {
+      const response = await fetch(
+        `https://api.spaceflightnewsapi.net/v4/articles/?limit=${limit}&offset=${offset}&ordering=-published_at`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch articles");
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [currentPage, pageSize]);
 
-  const handlePageChange = (page: number, pageSize?: number) => {
-    setCurrentPage(page);
+      const data = await response.json();
+      setCount(data.count);
+      setArticles(data.results);
+
+    }
+    getArticles().catch(console.error);
+
+  }, [limit, offset]);
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setOffset(((page - 1) * pageSize));
     setPageSize(pageSize || 10);
-    fetchData();
+    scrollTo();
   };
 
-  const handleSearch = async (query: string) => {
+  const isBrowser = () => typeof window !== "undefined";
+
+  function scrollTo() {
+    if (!isBrowser()) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const onShowSizeChange = (current: number, size: number) => {
+    setLimit(size);
+    setOffset(0);
+  };
+
+  const handleSearch = async (keyword: string) => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://api.spaceflightnewsapi.net/v4/articles?search=${query}`
+      const response = await fetch(
+        `https://api.spaceflightnewsapi.net/v4/articles?search=${encodeURIComponent(keyword)}`
       );
 
-      console.log('Search Query:', query);
-      console.log('Search Response:', response.data);
+      if (!response.ok) {
+        throw new Error("Failed to fetch search results");
+      }
 
-      if (Array.isArray(response.data)) {
-        setArticles(response.data);
-      } else if (Array.isArray(response.data.results)) {
-        setArticles(response.data.results);
+      const searchData = await response.json();
+
+      console.log('Search Keyword:', keyword);
+      console.log('Search Response:', searchData);
+
+      if (Array.isArray(searchData)) {
+        setArticles(searchData);
+      } else if (Array.isArray(searchData.results)) {
+        setArticles(searchData.results);
       } else {
-        console.error('Search response does not contain an array:', response.data);
+        console.error('Search response does not contain an array:', searchData);
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
@@ -78,80 +82,55 @@ const NewsPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [currentPage, pageSize, fetchData]);
-
-  const columns = [
-    { title: "Title", dataIndex: "title", key: "title" },
-    { title: "News Source", dataIndex: "news_site", key: "news_site" },
-    {
-      title: "Published At",
-      dataIndex: "published_at",
-      key: "published_at",
-      render: (text: string) => {
-        const options: Intl.DateTimeFormatOptions = {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          hour12: true,
-        };
-
-        return new Date(text).toLocaleString("en-US", options);
-      },
-    },
-  ];
-
   const handleViewChange = (checked: boolean) => {
     setTableView(checked ? "table" : "grid");
   };
 
   return (
-    <div style={{ maxWidth: "100%", display: "flex", flexDirection: "column" }}>
-      <div style={{ marginBottom: "10px" }}>
-        <span style={{ marginRight: "5px" }}>View as:</span>
-        <Switch
-          checkedChildren="Table"
-          unCheckedChildren="Grid"
-          defaultChecked={tableView === "table"}
-          onChange={handleViewChange}
-        />
-        <span style={{ marginLeft: "5px" }}>(Switch between Table and Grid view)</span>
+    <>
+      <div style={{ maxWidth: "100%", display: "flex", flexDirection: "column" }}>
+        <div style={{ marginBottom: "10px" }}>
+          <span style={{ marginRight: "5px" }}>View as:</span>
+          <Switch
+            checkedChildren="Table"
+            unCheckedChildren="Grid"
+            defaultChecked={tableView === "table"}
+            onChange={handleViewChange}
+          />
+          <span style={{ marginLeft: "5px" }}>(Switch between Table and Grid view)</span>
+        </div>
+
+        <ArticleSearch onSearch={handleSearch} />
+        <Typography.Title level={2}>Article Statistics</Typography.Title>
+        <ArticleStatistics articles={articles} count={count} />
+        <Divider />
+        <Typography.Title level={2}>Articles</Typography.Title>
+
+        {tableView === "table" ? (
+          <div>
+            <ArticleTable
+              articles={articles}
+              loading={false}
+            />
+          </div>
+        ) : (
+          <div>
+            <ArticleList
+              articles={articles}
+            />
+          </div>
+        )}
       </div>
-
-      <ArticleSearch onSearch={handleSearch} />
-      <Typography.Title level={2}>Article Statistics</Typography.Title>
-      <ArticleStatistics articles={articles} />
-
-      <Divider />
-      <Typography.Title level={2}>Articles</Typography.Title>
-
-      {tableView === "table" ? (
-        <div>
-          <ArticleTable
-            articles={articles}
-            loading={loading}
-            pageSize={pageSize}
-            totalArticles={totalArticles}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      ) : (
-        <div>
-          <ArticleList
-            articles={articles}
-            loading={loading}
-            pageSize={pageSize}
-            totalArticles={totalArticles}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
-    </div>
+      <Pagination
+        total={count}
+        pageSize={limit}
+        showSizeChanger
+        onChange={handlePageChange}
+        onShowSizeChange={onShowSizeChange}
+        current={Math.floor(offset / limit) + 1}
+        style={{ marginTop: "16px", textAlign: "center" }}
+      />
+    </>
   );
 };
 
