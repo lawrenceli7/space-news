@@ -43,6 +43,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading, }) => {
         dataSource={articles}
         columns={columns}
         loading={loading}
+        pagination={false}
       />
     </>
 

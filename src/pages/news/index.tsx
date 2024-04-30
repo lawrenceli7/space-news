@@ -11,7 +11,7 @@ const NewsPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageSize, setPageSize] = useState(10);
-  const [tableView, setTableView] = useState("table");
+  const [tableView, setTableView] = useState<boolean>(true);
   const [count, setCount] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
   const [offset, setOffset] = useState<number>(0);
@@ -83,7 +83,7 @@ const NewsPage: React.FC = () => {
   };
 
   const handleViewChange = (checked: boolean) => {
-    setTableView(checked ? "table" : "grid");
+    setTableView(checked);
   };
 
   return (
@@ -94,7 +94,7 @@ const NewsPage: React.FC = () => {
           <Switch
             checkedChildren="Table"
             unCheckedChildren="Grid"
-            defaultChecked={tableView === "table"}
+            defaultChecked={tableView}
             onChange={handleViewChange}
           />
           <span style={{ marginLeft: "5px" }}>(Switch between Table and Grid view)</span>
@@ -106,7 +106,7 @@ const NewsPage: React.FC = () => {
         <Divider />
         <Typography.Title level={2}>Articles</Typography.Title>
 
-        {tableView === "table" ? (
+        {tableView ? (
           <div>
             <ArticleTable
               articles={articles}
