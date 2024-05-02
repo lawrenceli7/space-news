@@ -1,13 +1,18 @@
 import { Layout } from "antd";
 import React from "react";
+import styled from "styled-components";
 
-const { Footer } = Layout;
+const { Footer: AntdFooter } = Layout;
+
+const StyledFooter = styled(AntdFooter)`
+  text-align: center;
+`;
 
 function CustomFooter() {
   return (
-    <Footer style={{ textAlign: "center" }}>
+    <StyledFooter>
       <span>Spark! ©2023 Created by Spark!</span>
-    </Footer>
+    </StyledFooter>
   );
 }
 

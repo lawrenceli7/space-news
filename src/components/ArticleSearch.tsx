@@ -1,7 +1,13 @@
 import { Button, Input } from 'antd';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const { Search } = Input;
+const { Search: AntdSearch } = Input;
+
+const StyledSearch = styled(AntdSearch)`
+  max-width: 80%;
+  margin-right: 16px;
+`;
 
 interface ArticleSearchProps {
     onSearch: (query: string) => void;
@@ -23,13 +29,12 @@ const ArticleSearch: React.FC<ArticleSearchProps> = ({ onSearch }) => {
 
     return (
         <div>
-            <Search
+            <StyledSearch
                 placeholder="Search article's title"
                 enterButton="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onSearch={handleSearch}
-                style={{ maxWidth: "80%", marginRight: 16 }}
             />
             <Button type="default" onClick={handleClear}>
                 Clear
