@@ -2,7 +2,28 @@
 import { Article } from "@/types/types";
 import { Card, Divider, Typography } from "antd";
 import React from "react";
+import styled from "styled-components";
 import image404 from "../assets/404.png";
+
+const StyledCard = styled(Card)`
+  max-width: 32.6%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  margin: 4px;
+  padding: 0;
+`;
+
+const StyledTitle = styled(Typography.Title)`
+  margin: 8px 0;
+  text-decoration: underline;
+`;
+
+const StyledImage = styled.img`
+  max-width: 100%;
+`;
 
 interface ArticleCardProps {
   article: Article;
@@ -16,38 +37,28 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     day: "numeric",
   };
 
+  function getImage(url: string) {
+    if (url) {
+      return <StyledImage src={article.image_url} alt="none" />;
+    } else {
+      return <img src={image404.src} alt="error-image" />;
+    }
+  }
+
   return (
-    <Card
+    <StyledCard
       hoverable
       onClick={() => window.open(article.url, "_blank")}
-      style={{ maxWidth: "32.9%", textAlign: "center", display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", margin: "2px", padding: "0" }}
-    >
-      <div
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0", marginBottom: "10px" }}>
-        <Typography.Title
-          level={4}
-          style={{ margin: "0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-          {article.title}
-        </Typography.Title>
-        <span
-          style={{ flexShrink: 0, whiteSpace: "nowrap" }}>{new Date(article.published_at).toLocaleDateString("en-US", options)}</span>
-      </div>
-      <img
-        src={article.image_url}
-        alt={article.title}
-        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          e.currentTarget.src = image404.src;
-        }}
-        style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "cover", borderRadius: "8px 8px 0 0", margin: "0", padding: "0" }}
-      />
-      <Typography.Title
-        level={4}
-        style={{ margin: "8px 0", textDecoration: "underline" }}>
+      title={article.title}
+      cover={getImage(article.image_url)}
+      extra={new Date(article.published_at).toLocaleDateString("en-US", options)}>
+      <StyledTitle
+        level={4}>
         {article.title}
         <Divider />
-      </Typography.Title>
+      </StyledTitle>
       <Typography.Paragraph>{article.summary}</Typography.Paragraph>
-    </Card>
+    </StyledCard>
   );
 };
 
