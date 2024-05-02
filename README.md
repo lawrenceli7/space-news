@@ -1,5 +1,7 @@
 # Space News
 
+This is an assignment for CS391 S1
+
 ## Installation
 
 1. Clone the repo with SSH.
