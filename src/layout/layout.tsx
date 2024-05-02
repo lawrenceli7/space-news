@@ -3,8 +3,9 @@ import { Layout } from "antd";
 import React from "react";
 import CustomFooter from "./footer";
 import CustomHeader from "./header";
-const { Content, Footer } = Layout;
-//You'll need to edit this component
+
+const { Content } = Layout;
+
 const LayoutComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout className="layout" style={{ minHeight: "100vh" }}>

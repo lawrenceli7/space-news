@@ -1,5 +1,3 @@
-// You should not need to edit this file
-
 export interface Launch {
   launch_id: string;
   provider: string;
@@ -16,7 +14,7 @@ export interface Article {
   updated_at: string;
   featured: boolean;
   launches: Launch[];
-  events: any[]; // Assuming events can be of any type
+  events: any[];
 }
 
 export interface ArticleResponse {
