@@ -1,5 +1,5 @@
 import { Article } from "@/types/types";
-import { Table } from "antd";
+import { Table, Typography } from "antd";
 interface ArticleTableProps {
   articles: Article[];
   loading: boolean;
@@ -39,6 +39,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading, }) => {
 
   return (
     <>
+      <Typography.Title level={2}>Articles</Typography.Title>
       <Table
         dataSource={articles}
         columns={columns}

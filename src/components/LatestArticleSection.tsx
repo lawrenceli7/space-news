@@ -81,29 +81,31 @@ const LatestArticleSection: React.FC = () => {
 
   return (
     <div>
-      <StyledDiv>
-        <Typography.Title level={2}>Latest Article</Typography.Title>
-        <Divider type="vertical" />
-        <Link href="/news">
-          <span>See all articles</span>
-        </Link>
-      </StyledDiv>
       {loading ? (
-        <p>Loading latest article...</p>
+        <p></p>
       ) : latestArticle ? (
-        <StyledCard
-          hoverable
-          onClick={() => window.open(latestArticle.url, "_blank")}
-          title={latestArticle.title}
-          cover={getImage(latestArticle.image_url)}
-          extra={new Date(latestArticle.published_at).toLocaleDateString("en-US", options)}>
-          <StyledTitle
-            level={4}>
-            {latestArticle.title}
-            <Divider />
-          </StyledTitle>
-          <Typography.Paragraph>{latestArticle.summary}</Typography.Paragraph>
-        </StyledCard>
+        <div>
+          <StyledDiv>
+            <Typography.Title level={2}>Latest Article</Typography.Title>
+            <Divider type="vertical" />
+            <Link href="/news">
+              <span>See all articles</span>
+            </Link>
+          </StyledDiv>
+          <StyledCard
+            hoverable
+            onClick={() => window.open(latestArticle.url, "_blank")}
+            title={latestArticle.title}
+            cover={getImage(latestArticle.image_url)}
+            extra={new Date(latestArticle.published_at).toLocaleDateString("en-US", options)}>
+            <StyledTitle
+              level={4}>
+              {latestArticle.title}
+              <Divider />
+            </StyledTitle>
+            <Typography.Paragraph>{latestArticle.summary}</Typography.Paragraph>
+          </StyledCard>
+        </div>
       ) : (
         <Typography.Text>No latest article found.</Typography.Text>
       )}

@@ -87,7 +87,7 @@ const NewsPage: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <div style={{ maxWidth: "100%", display: "flex", flexDirection: "column" }}>
         <div style={{ marginBottom: "10px" }}>
           <span style={{ marginRight: "5px" }}>View as:</span>
@@ -103,7 +103,6 @@ const NewsPage: React.FC = () => {
         <ArticleSearch onSearch={handleSearch} />
         <ArticleStatistics articles={articles} count={count} />
         <Divider />
-        <Typography.Title level={2}>Articles</Typography.Title>
 
         {tableView ? (
           <div>
@@ -129,7 +128,7 @@ const NewsPage: React.FC = () => {
         current={Math.floor(offset / limit) + 1}
         style={{ marginTop: "16px", textAlign: "center" }}
       />
-    </>
+    </div>
   );
 };
 
