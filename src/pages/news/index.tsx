@@ -101,7 +101,6 @@ const NewsPage: React.FC = () => {
         </div>
 
         <ArticleSearch onSearch={handleSearch} />
-        <Typography.Title level={2}>Article Statistics</Typography.Title>
         <ArticleStatistics articles={articles} count={count} />
         <Divider />
         <Typography.Title level={2}>Articles</Typography.Title>

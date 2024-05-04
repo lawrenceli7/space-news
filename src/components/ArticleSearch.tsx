@@ -5,8 +5,20 @@ import styled from 'styled-components';
 const { Search: AntdSearch } = Input;
 
 const StyledSearch = styled(AntdSearch)`
-  max-width: 80%;
-  margin-right: 16px;
+    margin-right: 16px;
+    max-width: 100%;
+`;
+
+const StyledDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 16px;
+    max-width: 100%;
+`;
+
+const StyledButton = styled(Button)`
+    max-width: 100%;
 `;
 
 interface ArticleSearchProps {
@@ -28,18 +40,18 @@ const ArticleSearch: React.FC<ArticleSearchProps> = ({ onSearch }) => {
     };
 
     return (
-        <div>
+        <StyledDiv>
             <StyledSearch
-                placeholder="Search article's title"
+                placeholder="Search for an article..."
                 enterButton="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onSearch={handleSearch}
             />
-            <Button type="default" onClick={handleClear}>
+            <StyledButton type="default" onClick={handleClear}>
                 Clear
-            </Button>
-        </div>
+            </StyledButton>
+        </StyledDiv>
     );
 };
 

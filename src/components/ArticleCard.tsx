@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Article } from "@/types/types";
 import { Card, Divider, Typography } from "antd";
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 import image404 from "../assets/404.png";
@@ -41,7 +42,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     if (url) {
       return <StyledImage src={article.image_url} alt="none" />;
     } else {
-      return <img src={image404.src} alt="error-image" />;
+      return <Image src={image404.src} alt="error-image" />;
     }
   }
 

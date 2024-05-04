@@ -1,6 +1,40 @@
 import { Article } from "@/types/types";
 import { Col, Divider, List, Row, Typography } from "antd";
 import React from "react";
+import styled from "styled-components";
+
+const StyledOuterDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+`;
+
+const StyledCol = styled(Col)`
+  border-radius: 10px;
+  background: #f5f5f5;
+  padding-left: 24px;
+  outline-style: solid;
+  outline-color: #e7e7e7;
+  height: 100%;
+`;
+
+const StyledTitle = styled(Typography)`
+  font-size: 16px;
+  font-weight: bold;
+  text-align: start;
+  margin-top: 15px;
+`;
+
+const StyledInfo = styled(Typography)`
+  font-size: 16px;
+  text-align: left;
+`;
+
+const StyledInnerDiv = styled.div`
+  padding-bottom: 10px;
+`;
+
+
 
 interface ArticleStatisticsProps {
   articles: Article[];
@@ -28,36 +62,38 @@ const ArticleStatistics: React.FC<ArticleStatisticsProps> = ({ articles }) => {
   const featuredArticlesCount = articles.filter((article) => article.featured).length;
 
   return (
-    <div style={{}}>
-      <Row gutter={16} style={{ display: "flex", flexDirection: "row", gap: "4px" }}>
-        <Col span={8} style={{ borderRadius: "10px", background: "#f5f5f5", paddingLeft: "25px", outlineStyle: "solid", outlineColor: "#e7e7e7", maxWidth: "33%", height: "100%" }}>
-          <Typography.Title level={4} style={{ fontSize: "15px" }}>Unique News Sources</Typography.Title>
+    <div>
+      <Typography.Title level={2}>Article Statistics</Typography.Title>
+      <StyledOuterDiv>
+        <StyledCol span={8}>
+          <StyledTitle>Unique News Sources</StyledTitle>
+          <Divider />
           <List
             dataSource={uniqueSources}
             renderItem={(source) => (
               <List.Item>
-                <Typography.Text style={{ fontSize: "15px" }}>{source}</Typography.Text>
+                <StyledInfo>{source}</StyledInfo>
               </List.Item>
             )}
           />
-        </Col>
-        <Col span={8} style={{ borderRadius: "10px", background: "#f5f5f5", paddingLeft: "25px", outlineStyle: "solid", outlineColor: "#e7e7e7", maxWidth: "33%", height: "100%" }}>
-          <Typography.Title level={4} style={{ fontSize: "15px" }}>Date Range of Articles</Typography.Title>
-          <div style={{ display: "flex", flexDirection: "column", paddingBottom: "10px" }}>
+        </StyledCol>
+        <StyledCol span={8}>
+          <StyledTitle>Date Range of Articles</StyledTitle>
+          <StyledInnerDiv>
             <Divider />
-            <Typography.Text style={{ fontSize: "15px" }}>{`Earliest: ${dateRange[0]}`}</Typography.Text>
+            <StyledInfo>{`Earliest: ${dateRange[0]}`}</StyledInfo>
             <Divider />
-            <Typography.Text style={{ fontSize: "15px" }}>{`Latest: ${dateRange[1]}`}</Typography.Text>
-          </div>
-        </Col>
-        <Col span={8} style={{ borderRadius: "10px", background: "#f5f5f5", paddingLeft: "25px", outlineStyle: "solid", outlineColor: "#e7e7e7", maxWidth: "33%", height: "100%" }}>
-          <Typography.Title level={4} style={{ fontSize: "15px" }}>Number of Featured Articles</Typography.Title>
+            <StyledInfo>{`Latest: ${dateRange[1]}`}</StyledInfo>
+          </StyledInnerDiv>
+        </StyledCol>
+        <StyledCol span={8}>
+          <StyledTitle>Number of Featured Articles</StyledTitle>
           <Divider />
-          <div style={{ paddingBottom: "10px" }}>
-            <Typography.Text style={{ fontSize: "15px" }}>Count: {featuredArticlesCount}</Typography.Text>
-          </div>
-        </Col>
-      </Row>
+          <StyledInnerDiv >
+            <StyledInfo>Count: {featuredArticlesCount}</StyledInfo>
+          </StyledInnerDiv>
+        </StyledCol>
+      </StyledOuterDiv>
     </div>
   );
 };

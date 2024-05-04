@@ -1,20 +1,21 @@
 import LatestArticleSection from "@/components/LatestArticleSection";
 import { Typography } from "antd";
 import { Inter } from "next/font/google";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-        }}
-      >
+    <div>
+      <StyledDiv>
         <Typography.Title>Space! News</Typography.Title>
         <Typography.Paragraph>
           Welcome to Space! News, your go-to source for the latest news and
@@ -39,7 +40,7 @@ export default function Home() {
           final frontier.
         </Typography.Paragraph>
         <LatestArticleSection />
-      </div>
-    </>
+      </StyledDiv>
+    </div>
   );
 }
