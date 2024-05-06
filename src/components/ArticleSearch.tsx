@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const { Search: AntdSearch } = Input;
@@ -28,6 +28,23 @@ interface ArticleSearchProps {
 const ArticleSearch: React.FC<ArticleSearchProps> = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState('');
 
+    useEffect(() => {
+        const handleResize = () => {
+            const placeholderText = window.innerWidth <= 1000 ? 'Search article...' : 'Search for an article...';
+            setSearchPlaceholder(placeholderText);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const [searchPlaceholder, setSearchPlaceholder] = useState('Search for an article...');
+
     const handleSearch = () => {
         if (searchQuery.trim() !== '') {
             onSearch(searchQuery.trim());
@@ -42,7 +59,7 @@ const ArticleSearch: React.FC<ArticleSearchProps> = ({ onSearch }) => {
     return (
         <StyledDiv>
             <StyledSearch
-                placeholder="Search for an article..."
+                placeholder={searchPlaceholder}
                 enterButton="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

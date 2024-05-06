@@ -1,5 +1,5 @@
 import { Article } from "@/types/types";
-import { Col, Divider, List, Row, Typography } from "antd";
+import { Col, Divider, List, Typography } from "antd";
 import React from "react";
 import styled from "styled-components";
 
@@ -7,6 +7,10 @@ const StyledOuterDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 15px;
+
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const StyledCol = styled(Col)`
@@ -16,6 +20,11 @@ const StyledCol = styled(Col)`
   outline-style: solid;
   outline-color: #e7e7e7;
   height: 100%;
+
+  @media screen and (max-width: 1000px) {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
 `;
 
 const StyledTitle = styled(Typography)`
@@ -33,8 +42,6 @@ const StyledInfo = styled(Typography)`
 const StyledInnerDiv = styled.div`
   padding-bottom: 10px;
 `;
-
-
 
 interface ArticleStatisticsProps {
   articles: Article[];

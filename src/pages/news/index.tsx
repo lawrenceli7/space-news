@@ -89,6 +89,7 @@ const NewsPage: React.FC = () => {
   return (
     <div>
       <div style={{ maxWidth: "100%", display: "flex", flexDirection: "column" }}>
+        <ArticleSearch onSearch={handleSearch} />
         <div style={{ marginBottom: "10px" }}>
           <span style={{ marginRight: "5px" }}>View as:</span>
           <Switch
@@ -100,7 +101,6 @@ const NewsPage: React.FC = () => {
           <span style={{ marginLeft: "5px" }}>(Switch between Table and Grid view)</span>
         </div>
 
-        <ArticleSearch onSearch={handleSearch} />
         <ArticleStatistics articles={articles} count={count} />
         <Divider />
 
