@@ -1,21 +1,5 @@
 import { Article } from "@/types/types";
 import { Table, Typography } from "antd";
-import React from "react";
-import styled from "styled-components";
-
-const StyledTable = styled(Table)`
-  .ant-table-cell {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  @media screen and (max-width: 750px) {
-    .ant-table-cell {
-      white-space: normal;
-    }
-  }
-`;
 
 interface ArticleTableProps {
   articles: Article[];
@@ -23,6 +7,16 @@ interface ArticleTableProps {
 }
 
 const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading }) => {
+  const tableCellStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  };
+
+  const mobileCellStyle = {
+    whiteSpace: "normal"
+  };
+
   const columns = [
     {
       title: "Title",
@@ -38,13 +32,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading }) => {
       title: "News Source",
       dataIndex: "news_site",
       key: "news_site",
-      ellipsis: true,
+      style: tableCellStyle,
     },
     {
       title: "Published At",
       dataIndex: "published_at",
       key: "published_at",
-      ellipsis: true,
+      style: tableCellStyle,
       render: (text: string) => {
         const options: Intl.DateTimeFormatOptions = {
           month: "long",
@@ -62,7 +56,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, loading }) => {
   return (
     <div>
       <Typography.Title level={2}>Articles</Typography.Title>
-      <StyledTable
+      <Table
         dataSource={articles}
         columns={columns}
         loading={loading}

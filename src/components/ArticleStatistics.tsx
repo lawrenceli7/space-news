@@ -1,6 +1,5 @@
 import { Article } from "@/types/types";
 import { Col, Divider, List, Typography } from "antd";
-import React from "react";
 import styled from "styled-components";
 
 const StyledOuterDiv = styled.div`
