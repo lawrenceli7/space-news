@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  max-width: 45%;
+  max-width: 30%;
   text-align: center;
   display: flex;
   flex-direction: column;

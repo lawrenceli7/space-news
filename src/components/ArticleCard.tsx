@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Article } from "@/types/types";
 import { Card, Divider, Typography } from "antd";
 import Image from "next/image";
@@ -15,6 +14,14 @@ const StyledCard = styled(Card)`
   height: 100%;
   margin: 4px;
   padding: 0;
+
+  @media screen and (max-width: 1250px) {
+    max-width: 49.2%;
+  }
+
+  @media screen and (max-width: 1160px) {
+    max-width: 100%;
+  }
 `;
 
 const StyledTitle = styled(Typography.Title)`
