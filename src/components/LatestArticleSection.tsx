@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  max-width: 30%;
+  max-width: 40%;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -21,6 +21,10 @@ const StyledCard = styled(Card)`
   height: 100%;
   margin: 2px;
   padding: 0;
+
+  @media screen and (max-width: 800px) {
+    max-width: 100%;
+  }
 `;
 
 const StyledTitle = styled(Typography.Title)`
